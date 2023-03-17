@@ -1,0 +1,13 @@
+src/TipsAndTricks/Menu/bin
+src/TipsAndTricks/Menu/obj
+src/TipsAndTricks/TatBlog.Core/bin
+src/TipsAndTricks/TatBlog.Core/obj
+src/TipsAndTricks/TatBlog.Data/bin
+src/TipsAndTricks/TatBlog.Data/obj
+src/TipsAndTricks/TatBlog.Services/bin
+src/TipsAndTricks/TatBlog.Services/obj
+src/TipsAndTricks/TatBlog.WinApp/bin
+src/TipsAndTricks/TatBlog.WinApp/obj
+*.vs
+src/TipsAndTricks/TatBlog.WebApp/obj
+src/TipsAndTricks/TatBlog.WebApp/bin

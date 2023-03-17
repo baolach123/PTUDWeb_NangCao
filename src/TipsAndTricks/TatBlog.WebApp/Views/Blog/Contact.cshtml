@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["PageTitle"] = "Liên hệ";
+}
+
+<main role="main">
+    <div class="container mt-2">
+        <h1 class="text-center">Thông tin Liên hệ</h1>
+        <div class="row">
+            <div class="col col-md-6">
+                <img src="~/images/cre_ netic.jpg" width="100%">
+            </div>
+            <div class="col col-md-6">
+                <form method="post" action="https://www.facebook.com/profile.php?id=100004981729426">
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="Email của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="SĐT">SĐT*</label>
+                        <input type="SĐT" class="form-control" id="SĐT" name="SĐT"
+                               placeholder="SĐT của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Tiêu đề*</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               placeholder="Tiêu đề của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Lời nhắn*</label>
+                        <textarea name="message" class="form-control"></textarea>
+                    </div>
+                    <button class="btn btn-primary" name="btnGoiLoiNhan">Gửi lời nhắn</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col col-md-12">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3903.2457615341873!2d108.43868111472972!3d11.957479091526794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317112da8b569421%3A0x1b7d7218266eb573!2zMzMgxJDGsOG7nW5nIFRy4bqnbiBLaMOhbmggRMawLCBQaMaw4budbmcgOCwgVGjDoG5oIHBo4buRIMSQw6AgTOG6oXQsIEzDom0gxJDhu5NuZywgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1678452249238!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                       
+            </div>
+        </div>
+    </div>
+
+</main>
