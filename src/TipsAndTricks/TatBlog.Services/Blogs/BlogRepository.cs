@@ -65,6 +65,17 @@ public class BlogRepository : IBlogRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IList<Author>> GetPopularAuthorsAsync(
+        int numAuthor,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Author>()
+            .Include(x => x.Posts)
+            .OrderByDescending(x => x.Posts.Count)
+            .Take(numAuthor)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<bool> IsPostSlugExixtedAsync(
         int postID, string slug,
         CancellationToken cancellationToken = default)
@@ -258,7 +269,7 @@ public class BlogRepository : IBlogRepository
                     .SetProperty(a=>a.Category, postt.Category)
                     .SetProperty(a=>a.Author, postt.Author)
                     .SetProperty(a=>a.Tags, postt.Tags)
-                    , cancellationToken);
+                    , cancellationToken);   
         }
         else
         {
@@ -420,6 +431,8 @@ public class BlogRepository : IBlogRepository
             .ToListAsync(cancellationToken);
     }
 
+
+
     public async Task<Post> GetPostByIdAsync(
         int postId, bool includeDetails = false,
         CancellationToken cancellationToken = default)
@@ -537,5 +550,23 @@ public class BlogRepository : IBlogRepository
         await _context.SaveChangesAsync(cancellationToken);
 
         return post.Published;
+    }
+
+    public async Task<IList<PostItem>> ListMonth(
+            int n,
+            CancellationToken cancellationToken = default)
+    {
+
+        return await _context.Set<Post>()
+        .GroupBy(x => new { x.PostedDate.Year, x.PostedDate.Month })
+        .Select(g => new PostItem()
+        {
+            Year = g.Key.Year,
+            Month = g.Key.Month,
+            PostCount = g.Count(x => x.Published)
+        })
+        .OrderByDescending(x => x.Year)
+        .ThenByDescending(x => x.Month)
+        .ToListAsync(cancellationToken);
     }
 }

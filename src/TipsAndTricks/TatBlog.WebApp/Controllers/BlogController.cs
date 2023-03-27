@@ -80,31 +80,13 @@ namespace TatBlog.WebApp.Controllers
              int year,
              int month,
              int day,
-             string slug = null,
-             int pageNumber = 1,
-             int pageSize = 2)
+             string slug = null)
         {
-            // Tạo đối tượng chứa các điều kiện truy vấn
-            var postQuery = new PostQuery()
-            {
-                // Chỉ lấy những bài viết có trạng thái Published
-                PublishedOnly = true,
-
-                // Tìm bài viết theo từ khóa
-                PostSlug = slug,
-                PostedYear = year,
-                PostedMonth = month,
-                PostedDay = day
-            };
-
+        
             // Truy vấn các bài viết theo điều kiện đã tạo
-            var postsList = await _blogRepository.GetPagedPostsAsync(postQuery, pageNumber, pageSize);
-            await _blogRepository.IncreaseViewCountAsync(postsList.FirstOrDefault().Id);
-
-            // Lưu lại điều kiện truy vấn để hiển thị trong View
-            ViewBag.PostQuery = postQuery;
-
-            return View(postsList);
+            var post = await _blogRepository.GetPostAsync(year,month,slug);
+            await _blogRepository.IncreaseViewCountAsync(post.Id);
+            return View(post);
         }
 
         public async Task<IActionResult> Index(
@@ -120,9 +102,7 @@ namespace TatBlog.WebApp.Controllers
 
             var postList = await _blogRepository
                 .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
-
             ViewBag.PostQuery = postQuery;
-
             return View(postList);
         }
    

@@ -17,7 +17,7 @@
             <div class="col-md-8">
                 <div class="card-body">
 
-                    <a asp-area="" asp-controller="Blog" asp-action="Post" asp-route-slug="@Model.UrlSlug">
+                    <a asp-area="" asp-controller="Blog" asp-action="Post" asp-route-year="@Model.PostedDate.Year" asp-route-month="@Model.PostedDate.Month" asp-route-slug="@Model.UrlSlug">
                         <h5>
                             @Model.Title
                         </h5> 

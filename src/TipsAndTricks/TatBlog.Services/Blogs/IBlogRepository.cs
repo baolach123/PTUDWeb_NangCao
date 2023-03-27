@@ -73,9 +73,17 @@ namespace TatBlog.Services.Blogs
         Task<IPagedList<CategoryItem>> GetPagingCategoryAsync(IPagingParams pagingParams,
         CancellationToken cancellationToken = default);
 
+        Task<IList<Author>> GetPopularAuthorsAsync(
+        int numAuthor,
+        CancellationToken cancellationToken = default);
+
 
         Task<Post> SeekPostByIdAsync(
             int id,
+            CancellationToken cancellationToken = default);
+
+        Task<IList<PostItem>> ListMonth(
+            int n,
             CancellationToken cancellationToken = default);
 
         Task AddOrUpdatePostAsysc(Post postt,
