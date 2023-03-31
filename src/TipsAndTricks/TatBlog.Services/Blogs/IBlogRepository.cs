@@ -48,9 +48,16 @@ namespace TatBlog.Services.Blogs
         Task<IList<TagItem>> GetListTagAndAmountOfPostInTagAsync(
             CancellationToken cancellationToken = default);
 
+        Task<bool> IsCategorySlugExistedAsync(
+        int categoryId, string categorySlug,
+        CancellationToken cancellationToken = default);
+
         Task<Category> SeekCategoryAsync(
             string slugCategory,
             CancellationToken cancellationToken = default);
+
+        Task<bool> AddOrUpdateAsync(
+        Category category, CancellationToken cancellationToken = default);
 
         Task<Category> SeekCategoryByIdAsync(
             int categoryId,
@@ -60,8 +67,17 @@ namespace TatBlog.Services.Blogs
             int Id,
             CancellationToken cancellationToken = default);
 
+        Task<bool> DeleteCategoryIdAsync(int id, CancellationToken cancellationToken = default);
+
         Task AddOrUpdateCategoryAsysc(
             Category category, CancellationToken cancellationToken = default);
+
+        Task<Category> GetCachedCategoryIdAsync(int categoryId);
+
+        Task<IPagedList<CategoryItem>> GetPagedCategoryAsync(
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default);
 
         Task RemoveCategoryByIdAsync(
             int Id, CancellationToken cancellationToken = default);
@@ -103,6 +119,11 @@ namespace TatBlog.Services.Blogs
 
         Task<IPagedList<Post>> SeekPagingPostAsync(PostQuery postQuery,
             IPagingParams pagingParams, CancellationToken cancellationToken=default);
+
+        Task<IPagedList<T>> GetPagedPostsAsync<T>(
+            PostQuery condition,
+            IPagingParams pagingParams,
+            Func<IQueryable<Post>, IQueryable<T>> mapper);
 
         Task<IPagedList<Post>> GetPagedPostsAsync(
                 PostQuery condition,

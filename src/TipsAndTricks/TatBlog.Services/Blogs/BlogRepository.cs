@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,10 +18,12 @@ namespace TatBlog.Services.Blogs;
 public class BlogRepository : IBlogRepository
 {
     private readonly BlogDbContext _context;
+    private readonly IMemoryCache _memoryCache;
 
-    public BlogRepository(BlogDbContext context)
+    public BlogRepository(BlogDbContext context, IMemoryCache memoryCache)
     {
         _context = context;
+        _memoryCache = memoryCache;
     }
 
 
@@ -76,6 +79,49 @@ public class BlogRepository : IBlogRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<Category> GetCachedCategoryIdAsync(int categoryid)
+    {
+        return await _memoryCache.GetOrCreateAsync(
+            $"category.by-id.{categoryid}",
+            async (entryu) =>
+            {
+                entryu.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                return await GetCategoryIdAsync(categoryid);
+            });
+
+
+    }
+
+
+
+
+
+    public async Task<IPagedList<CategoryItem>> GetPagedCategoryAsync(
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default)
+    {
+        var categoryQuery = _context.Set<Category>()
+            .Select(x => new CategoryItem()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                UrlSlug = x.UrlSlug,
+                Description = x.Description,
+                PostCount = x.Posts.Count(p => p.Published),
+                ShowOnMenu = x.ShowOnMenu,
+            });
+        return await categoryQuery
+            .ToPagedListAsync(pagingParams, cancellationToken);
+    }
+
+    public async Task<Category> GetCategoryIdAsync(int id, bool p = true, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Category>()
+           .Where(x => x.Id == id)
+           .FirstOrDefaultAsync(cancellationToken);
+    }
+
     public async Task<bool> IsPostSlugExixtedAsync(
         int postID, string slug,
         CancellationToken cancellationToken = default)
@@ -129,6 +175,48 @@ public class BlogRepository : IBlogRepository
                 PostCount = x.Posts.Count(p => p.Published)
             })
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<bool> IsCategorySlugExistedAsync(
+        int categoryId, string categorySlug,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Category>()
+            .AnyAsync(x => x.Id != categoryId && x.UrlSlug == categorySlug, cancellationToken);
+
+    }
+
+    public async Task<bool> AddOrUpdateAsync(
+        Category category,
+        CancellationToken cancellationToken = default)
+    {
+
+        if (category.Id > 0)
+        {
+            _context.Categoties.Update(category);
+            _memoryCache.Remove($"category.by-id.{category.Id}");
+
+        }
+        else
+        {
+            _context.Categoties.Add(category);
+
+        }
+        return await _context.SaveChangesAsync(cancellationToken) > 0;
+    }
+
+    public async Task<bool> DeleteCategoryIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var category = await _context.Set<Category>().FindAsync(id);
+
+        if (category is null) return false;
+
+
+        _context.Set<Category>().Remove(category);
+
+        var rowCount = await _context.SaveChangesAsync(cancellationToken);
+
+        return rowCount > 0;
     }
 
     public async Task<IPagedList<TagItem>> GetPagedTagsAsync(
@@ -400,6 +488,18 @@ public class BlogRepository : IBlogRepository
 
         //return postQuery;
     }
+
+    public async Task<IPagedList<T>> GetPagedPostsAsync<T>(
+            PostQuery condition,
+            IPagingParams pagingParams,
+            Func<IQueryable<Post>, IQueryable<T>> mapper)
+    {
+        var posts = FilterPosts(condition);
+        var projectedPosts = mapper(posts);
+        
+        return await projectedPosts.ToPagedListAsync(pagingParams);
+    }
+
     public async Task<IPagedList<Post>> GetPagedPostsAsync(
                 PostQuery condition,
                 int pageNumber = 1,

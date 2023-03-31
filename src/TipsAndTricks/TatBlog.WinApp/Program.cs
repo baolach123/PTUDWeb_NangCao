@@ -14,17 +14,17 @@ namespace TatBlog.WinApp
     {
         static void Main(string[] args)
         {
-            var context = new BlogDbContext();
-            var seeder = new DataSeeder(context);
-            seeder.Initialize();
-            Menu menu = new Menu();
-            menu.XuatMenu();
-            int n;
-            do
-            {
-                n = menu.ChonMenu();
-                menu.XyLyMenu(n);
-            } while (n > 0 && n < 20);
+            //var context = new BlogDbContext();
+            //var seeder = new DataSeeder(context);
+            //seeder.Initialize();
+            //Menu menu = new Menu();
+            //menu.XuatMenu();
+            //int n;
+            //do
+            //{
+            //    n = menu.ChonMenu();
+            //    menu.XyLyMenu(n);
+            //} while (n > 0 && n < 20);
 
         }
     }
