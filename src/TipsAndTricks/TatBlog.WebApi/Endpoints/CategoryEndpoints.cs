@@ -75,7 +75,7 @@ public static class CategoryEndpoints
         IBlogRepository blogRepository)
     {
         var categoriesList = await blogRepository
-            .GetPagedCategoryAsync(model, model.Name);
+            .GetPagedCategoriesAsync(model, model.Name);
 
         var paginationResult =
             new PaginationResult<CategoryItem>(categoriesList);
@@ -88,7 +88,7 @@ public static class CategoryEndpoints
         IBlogRepository blogRepository,
         IMapper mapper)
     {
-        var category = await blogRepository.GetCachedCategoryIdAsync(id);
+        var category = await blogRepository.GetCachedCategoryByIdAsync(id);
         return category == null
             ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                 $"Khong tim thay category co ma {id}"))
@@ -127,7 +127,7 @@ public static class CategoryEndpoints
         }
 
         var category = mapper.Map<Category>(model);
-        await blogRepository.AddOrUpdateAsync(category);
+        await blogRepository.CreateOrUpdateCategoryAsync(category);
 
         return Results.Ok(ApiResponse.Success(
             mapper.Map<CategoryItem>(category), HttpStatusCode.Created));
@@ -159,11 +159,7 @@ public static class CategoryEndpoints
         var category = mapper.Map<Category>(model);
         category.Id = id;
 
-        return await blogRepository.AddOrUpdateAsync(category)
-            ? Results.Ok(ApiResponse.Success("Author is update",
-                      HttpStatusCode.NoContent))
-            : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                      "Could not find author"));
+        return Results.Ok("");
 
     }
 
@@ -172,11 +168,7 @@ public static class CategoryEndpoints
         int id, 
         IBlogRepository blogRepository)
     {
-        return await blogRepository.DeleteCategoryIdAsync(id)
-            ? Results.Ok(ApiResponse.Success("Author is delered",
-                      HttpStatusCode.NoContent))
-            : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                      "Could not find author"));
+        return Results.Ok("");
     }
 
 }

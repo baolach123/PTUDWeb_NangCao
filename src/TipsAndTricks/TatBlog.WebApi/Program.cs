@@ -11,8 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
         .ConfigureServices()
         .ConfigureSwaggerOpenAPI()
         .ConfigureMapster()
-        .ConfigureFluentValidation();
-    
+        .ConfigureFluentValidation();    
 }
 
 
@@ -22,6 +21,6 @@ var app = builder.Build();
     app.SetupRequestPipeLibe();
     app.MapAuthorEndPoints();
     app.MapCategoryEndpoints();
+    app.MapPostEndpoints();
     app.Run();
-
 }

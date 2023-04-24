@@ -4,12 +4,29 @@ namespace TatBlog.Core.Collections;
 
 public class PagingMetadata : IPagedList
 {
-	protected PagingMetadata(int pageNumber, int pageSize, int totalCount)
-	{
-		PageNumber = pageNumber;
-		PageSize = pageSize;
-		TotalItemCount = totalCount;
-	}
+    public int PageIndex { get; private set; }
+    public int PageSize { get; }
+    public int TotalItemCount { get; }
+    public int LastItemIndex
+        => Math.Min(TotalItemCount, ((PageIndex * PageSize) + PageSize));
+    public bool IsFirstPage => (PageIndex <= 0);
+    public bool IsLastPage => (PageIndex >= (PagedCount - 1));
+    public bool HasPreviousPage => PageIndex > 0;
+    public bool HasNextPage => (PageIndex < (PagedCount - 1));
+    public int FirstItemIndex => (PageIndex * PageSize) + 1;
+
+    public PagingMetadata()
+    {
+    }
+
+    public PagingMetadata(int pageNumber, int pageSize, int totalCount)
+    {
+        PageNumber = pageNumber;
+        PageSize = pageSize;
+        TotalItemCount = totalCount;
+    }
+
+
 
 	public PagingMetadata(IPagedList pagedList)
 	{
@@ -18,15 +35,6 @@ public class PagingMetadata : IPagedList
 		PageSize = pagedList.PageSize;
 	}
 
-    public PagingMetadata()
-    {
-    }
-
-    public int PageIndex { get; private set; }
-
-	public int PageSize { get; }
-
-	public int TotalItemCount { get; }
 
 	public int PageNumber
 	{
@@ -34,34 +42,19 @@ public class PagingMetadata : IPagedList
 		set => PageIndex = value - 1;
 	}
 
-	public int PageCount
-	{
+	public int PagedCount
+    {
 		get
 		{
 			if (PageSize == 0)
 				return 0;
-
 			var total = TotalItemCount / PageSize;
-
 			if (TotalItemCount % PageSize > 0)
 				total++;
-
 			return total;
 		}
 	}
 
-	public bool HasPreviousPage => PageIndex > 0;
 
-	public bool HasNextPage => (PageIndex < (PageCount - 1));
 
-	public int FirstItemIndex => (PageIndex * PageSize) + 1;
-
-	public int LastItemIndex
-		=> Math.Min(TotalItemCount, ((PageIndex * PageSize) + PageSize));
-
-	public bool IsFirstPage => (PageIndex <= 0);
-
-	public bool IsLastPage => (PageIndex >= (PageCount - 1));
-
-    public int PagedCount => throw new NotImplementedException();
 }

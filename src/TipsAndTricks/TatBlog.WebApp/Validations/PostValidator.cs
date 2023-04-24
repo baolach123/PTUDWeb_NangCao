@@ -31,7 +31,7 @@ namespace TatBlog.WebApp.Validations
 
             RuleFor(x => x.UrlSlug)
                 .MustAsync(async (postModel, slug, CancellationToken) =>
-                !await blogRepository.IsPostSlugExixtedAsync(
+                !await blogRepository.IsPostSlugExistedAsync(
                     postModel.Id, slug, CancellationToken))
                 .WithMessage("Slug'{PropertyValue}' đã được sử dụng");
 

@@ -15,7 +15,7 @@ namespace TatBlog.WebApp.Components
         // display 5 post random
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var postList = await _blogRepository.GetTagsAsync();
+            var postList = await _blogRepository.GetRandomPostsAsync(5);
             return View(postList);
         }
     }

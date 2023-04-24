@@ -7,30 +7,20 @@ using TatBlog.Core.Contracts;
 
 namespace TatBlog.Core.Entities;
 
-//Biểu diễn tác giả của một bài viết
+
  public class Author : IEntity
 {
-    //Mã bài viết
     public int Id { get; set; }
-
-    //Tên bài viết
     public string FullName { get; set; }
-
-    //Tên định danh dùng để tạo URL
     public string UrlSlug { get; set; }
-
-    //Đường dẫn tới file ảnh
     public string ImageUrl { get; set; }
 
-    //Ngày bắt đầu 
+    public string AuthorId { get; set; }
     public DateTime JoinedDate { get; set; }
-
-    // Địa chỉ email
     public string Email { get; set; }
-
-    //Ghi chú
     public string Notes { get; set; }
 
-    //Danh sách các bài viết của tác giả
+    public string AuthorName { get; set; }
+
     public IList<Post> Posts { get; set; }
 }

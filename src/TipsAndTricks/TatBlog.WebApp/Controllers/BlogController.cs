@@ -37,7 +37,7 @@ namespace TatBlog.WebApp.Controllers
                 };
                 
                 var postList = await _blogRepository
-                    .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+                    .GetPagedPostAsync(postQuery);
 
                 ViewBag.PostQuery = postQuery;
 
@@ -53,7 +53,7 @@ namespace TatBlog.WebApp.Controllers
             };
 
             var postList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+                .GetPagedPostAsync(postQuery, pageNumber, pageSize);
 
             ViewBag.PostQuery = postQuery;
 
@@ -69,7 +69,7 @@ namespace TatBlog.WebApp.Controllers
             };
 
             var postList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+                .GetPagedPostAsync(postQuery, pageNumber, pageSize);
 
             ViewBag.PostQuery = postQuery;
 
@@ -101,7 +101,7 @@ namespace TatBlog.WebApp.Controllers
             };
 
             var postList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+                .GetPagedPostAsync(postQuery, pageNumber, pageSize);
             ViewBag.PostQuery = postQuery;
             return View(postList);
         }

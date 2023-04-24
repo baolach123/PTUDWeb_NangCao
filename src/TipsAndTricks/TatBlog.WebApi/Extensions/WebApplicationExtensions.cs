@@ -13,8 +13,10 @@ namespace TatBlog.WebApi.Extensions
         {
             builder.Services.AddMemoryCache();
 
-            builder.Services.AddDbContext<BlogDbContext>(options=>options
-            .UseSqlServer(builder.Configuration.GetConnectionString("LAPTOP-IHERN55O")));
+            builder.Services.AddDbContext<BlogDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddScoped<ITimeProvider,LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager,LocalFileSystemMediaManager>();
@@ -60,7 +62,6 @@ namespace TatBlog.WebApi.Extensions
 
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-
             app.UseCors("TatBlogApp");
 
 
