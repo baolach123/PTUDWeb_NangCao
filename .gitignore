@@ -11,3 +11,5 @@ src/TipsAndTricks/TatBlog.WinApp/obj
 *.vs
 src/TipsAndTricks/TatBlog.WebApp/obj
 src/TipsAndTricks/TatBlog.WebApp/bin
+src/TipsAndTricks/TatBlog.WebApi/obj
+src/TipsAndTricks/TatBlog.WebApi/bin
